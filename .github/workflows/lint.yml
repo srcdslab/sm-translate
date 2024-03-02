@@ -1,0 +1,57 @@
+name: Python Linting
+
+on:
+  push:
+    branches:
+      - master
+      - main
+    paths:
+      - "**/*.py"
+  pull_request:
+    branches:
+      - master
+      - main
+    paths:
+      - "**/*.py"
+
+jobs:
+  pyright:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.11']
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e .[dev]
+          python -m pip install -r requirements.txt
+
+      - name: Run pyright
+        uses: jakebailey/pyright-action@v2
+
+  ruff:
+    name: ruff
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        command:
+          - 'check . --diff'
+          - 'format . --diff'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: chartboost/ruff-action@v1
+        with:
+          args: ${{ matrix.command }}

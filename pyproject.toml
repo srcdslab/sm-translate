@@ -1,0 +1,49 @@
+[project]
+name = "smtranslate"
+dynamic = ["version"]
+description = "Sourcemod translation linter and formatter"
+readme = "README.md"
+authors = [
+    {name = "maxime1907", email = "19607336+maxime1907@users.noreply.github.com"},
+]
+classifiers = [
+    "License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.11",
+]
+requires-python = ">=3.11"
+dependencies = [
+    "click",
+    "pyyaml",
+    "vdf"
+]
+
+[project.scripts]
+smtranslate = "smtranslate.cli:cli"
+
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+exclude = ["*.tests", "*.tests.*", "tests.*", "tests"]
+
+[tool.setuptools.dynamic]
+version = {file = "VERSION"}
+
+[project.optional-dependencies]
+dev = [
+    "bandit",
+    "pip-tools",
+    "pyright",
+    "pyupgrade",
+    "ruff",
+]
+
+[tool.bandit]
+exclude_dirs = ["./.git", "./documentation", "./tests", "./.venv", "./build"]
+skips = []
+
+[tool.pytest.ini_config]
+log_level = "INFO"

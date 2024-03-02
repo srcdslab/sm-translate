@@ -1,0 +1,5 @@
+logging:
+    level: "INFO"
+    output: "default"
+    format: "%(asctime)s | %(levelname)s | %(message)s"
+    datefmt: "%Y-%m-%dT%H:%M:%S%z"
